@@ -1,0 +1,9 @@
+package Java_Project;
+
+/*
+ * This class will implement the InterfaceMethods interface.
+ * The class will contain the code needed to display the entire user interface.
+ */
+public class UserInterface implements InterfaceMethods{
+    
+}

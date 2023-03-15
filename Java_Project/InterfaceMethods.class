@@ -1,0 +1,10 @@
+package Java_Project;
+
+/*
+ * This inteface will contain all the needed methods for the UserInterface
+ * 
+*/
+
+public interface InterfaceMethods {
+    
+}

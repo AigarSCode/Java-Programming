@@ -1,0 +1,8 @@
+package Java_Project;
+
+ /*
+  * This class will use the data read in by the ReadCSV.class and use it to learn.
+  */
+public class LearnData {
+    
+}
