@@ -1,8 +1,0 @@
-package Java_Project;
-
-/*
- * This class will be used to read in a CSV file.
- */
-public class ReadCSV {
-    
-}
