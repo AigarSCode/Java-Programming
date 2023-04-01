@@ -1,24 +1,29 @@
 package ClassPackage;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class FileManager {
-    protected File csvfile;
+public class FileManager implements FileInterface{
+    protected File activeFile;
     protected Scanner fileScanner;
+    protected PrintWriter fileWriter;
+    protected File outFile;
+    protected File logFile;
 
     // Constructor
     public FileManager(String fileName){
 
         try {
             // File Must be in the project directory not in src
-            csvfile = new File(fileName);
+            activeFile = new File(fileName);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
 
     // Delete a file called fileName
     public void deleteFile(String fileName){
@@ -38,12 +43,13 @@ public class FileManager {
         }
     }
 
+
     // Return the next String token from active file
     public String readNext(){
         String s = "";
 
         try {
-            fileScanner = new Scanner(csvfile);
+            fileScanner = new Scanner(activeFile);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,6 +67,18 @@ public class FileManager {
         return s;
     }
 
+
+    // Writes an input string out to a file
+    public void writeNextCSV(String fileName, String next){
+
+    }
+
+
+    // Writes an input line into a log file and makes it if it doesnt exist
+    public void writeNextLog(String filename, String nextLine){
+
+    }
+
     
     
-}
+}// End FileManager
