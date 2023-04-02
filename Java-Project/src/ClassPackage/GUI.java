@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//import java.awt.event.WindowAdapter;
+//import java.awt.event.WindowEvent;
 
 
 public class GUI extends JFrame implements ActionListener{
@@ -29,6 +31,7 @@ public class GUI extends JFrame implements ActionListener{
         mainFrame.setVisible(true);
         mainFrame.setSize(600, 600);
         mainFrame.setLayout(new BorderLayout());
+        
 
         // Layouts of the panels
         mainFrame.add(topPanel, BorderLayout.NORTH);
@@ -79,5 +82,6 @@ public class GUI extends JFrame implements ActionListener{
 
         }
     }
+
     
 }

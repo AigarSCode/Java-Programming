@@ -25,6 +25,13 @@ public class FileManager implements FileInterface{
 
     }
 
+    
+    // Close all readers and writers
+    public void closeAll(){
+        fileScanner.close();
+        fileWriter.close();
+    }
+
 
     // Delete a file called fileName
     public void deleteFile(String fileName){
@@ -94,6 +101,7 @@ public class FileManager implements FileInterface{
     }
 
 
+    
     // Used to read the labels of the csv and return how many
     // Assuming the labels and their names are in the first and second line
     // and are in order i.e. (feature, feature, label) not (feature, label, feature)
@@ -149,14 +157,30 @@ public class FileManager implements FileInterface{
 
 
     // Used to read line by line and close when finished
-    public String[] readData(){
-        String[] s = {""};
+    
+    /*
+     * Need to add a check for what data is being read (data points or labels/names)
+     */
+    public String readData(){
+        String s = "";
 
         // Open the file with the scanner
         try {
             fileScanner = new Scanner(activeFile);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        while(fileScanner.hasNextLine()){
+
+            s = fileScanner.nextLine();
+            if(s.contains(",,")){
+                continue;
+            }
+            else{
+                s.toLowerCase();
+                return s;
+            }
         }
 
         return s;
