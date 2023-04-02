@@ -12,11 +12,12 @@ public class FileManager implements FileInterface{
     protected File logFile;
 
     // Constructor
-    public FileManager(String fileName){
+    public FileManager(String fileName, String logFileName){
 
         try {
             // File Must be in the project directory not in src
             activeFile = new File(fileName);
+            logFile = new File(logFileName);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,39 +44,133 @@ public class FileManager implements FileInterface{
         }
     }
 
+    
+    
+    // Used to read the Features of the csv and return how many
+    // Assuming the features and their names are in the first and second line
+    // and are in order i.e. (feature feature label) not (feature, label, feature)
+    public int readFeatures(String[] features){
+        int count = 0;
+        String s;
+        String[] temp;
 
-    // Return the next String token from active file
-    public String readNext(){
-        String s = "";
-
+        // Open the file with the scanner
         try {
             fileScanner = new Scanner(activeFile);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Counting how many Features
+        s = fileScanner.nextLine();
+        s.toLowerCase();
 
-        if(fileScanner.hasNext()){
-            s = fileScanner.next(",");
+        // Removing white space before/after comma
+        // https://stackoverflow.com/questions/41953388/java-split-and-trim-in-one-shot
+        temp = s.split("\\s*,\\s*");
+
+        for(String i: temp){
+            if(i == "feature"){
+                count++;
+            }
         }
-        else{
-            System.out.println("Nothing left!");
+
+        // Placing names into the String array
+        s = "";
+        temp = new String[0];
+        s = fileScanner.nextLine();
+        s.toLowerCase();
+
+        temp = s.split("\\s*,\\s*");
+
+        for(int i = 0; i < count; i++){
+            features[i] = temp[i];
         }
-       
+
+        // Close the scanner
         fileScanner.close();
+
+        return count;
+    }
+
+
+    // Used to read the labels of the csv and return how many
+    // Assuming the labels and their names are in the first and second line
+    // and are in order i.e. (feature, feature, label) not (feature, label, feature)
+    public int readLabels(String[] labels){
+        int count = 0, index = 0, pos = 0;
+        String s;
+        String[] temp;
+
+        // Open the file with the scanner
+        try {
+            fileScanner = new Scanner(activeFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        s = fileScanner.nextLine();
+        s.toLowerCase();
+
+        temp = s.split("\\s*,\\s*");
+
+        for(String i: temp){
+            if(i == "label"){
+                count++;
+            }
+        }
+        // Find first occurance for later
+        for(int i = temp.length; i < temp.length; i++){
+            if(temp[i] == "label"){
+                pos = i;
+                break;
+            }
+        }
+
+        // Placing names into the String array
+        s = "";
+        temp = new String[0];
+        s = fileScanner.nextLine();
+        s.toLowerCase();
+
+        temp = s.split("\\s*,\\s*");
+
+        // Put last label names into string array
+        for(int i = pos; i < temp.length; i++){
+            labels[index] = temp[i];
+            index++;
+        }
+
+        // Close the scanner
+        fileScanner.close();
+
+        return count;
+    }
+
+
+    // Used to read line by line and close when finished
+    public String[] readData(){
+        String[] s = {""};
+
+        // Open the file with the scanner
+        try {
+            fileScanner = new Scanner(activeFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return s;
     }
 
 
-    // Writes an input string out to a file
+    // Writes an input string (full csv line) out to a file
     public void writeNextCSV(String fileName, String next){
 
     }
 
 
-    // Writes an input line into a log file and makes it if it doesnt exist
-    public void writeNextLog(String filename, String nextLine){
+    // Writes an input line into a log file
+    public void writeNextLog(String nextLine){
 
     }
 
