@@ -7,9 +7,13 @@ import java.util.Scanner;
 public class FileManager implements FileInterface{
     protected File activeFile;
     protected Scanner fileScanner;
+    protected Scanner dataScanner;
     protected PrintWriter fileWriter;
     protected File outFile;
     protected File logFile;
+
+    protected static boolean open = false;
+    protected static int line = 0;
 
     // Constructor
     public FileManager(String fileName, String logFileName){
@@ -156,24 +160,33 @@ public class FileManager implements FileInterface{
     }
 
 
+
     // Used to read line by line and close when finished
-    
-    /*
-     * Need to add a check for what data is being read (data points or labels/names)
-     */
     public String readData(){
         String s = "";
 
-        // Open the file with the scanner
-        try {
-            fileScanner = new Scanner(activeFile);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Using a new scanner because when reading the data its better to 
+        // open the file once an then just call this method to return the next line
+        if(open != true){
+            // Open the file with the scanner
+            try {
+                dataScanner = new Scanner(activeFile);
+                open = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        while(fileScanner.hasNextLine()){
+        // Skip the first lines and move to the data 
+        while(line < 3){
+            s = dataScanner.nextLine();
 
-            s = fileScanner.nextLine();
+            line++;
+        }
+
+        while(dataScanner.hasNextLine()){
+
+            s = dataScanner.nextLine();
             if(s.contains(",,")){
                 continue;
             }
@@ -187,10 +200,12 @@ public class FileManager implements FileInterface{
     }
 
 
+
     // Writes an input string (full csv line) out to a file
     public void writeNextCSV(String fileName, String next){
 
     }
+
 
 
     // Writes an input line into a log file
