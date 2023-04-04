@@ -8,7 +8,7 @@ import ClassPackage.*;
 public class App {
     public static void main(String[] args){
         
-        GUI main = new GUI();
+        GUI mainGUI = new GUI();
 
         
     }

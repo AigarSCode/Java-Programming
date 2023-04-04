@@ -2,6 +2,7 @@ package ClassPackage;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileManager implements FileInterface{
@@ -60,7 +61,7 @@ public class FileManager implements FileInterface{
     // Used to read the Features of the csv and return how many
     // Assuming the features and their names are in the first and second line
     // and are in order i.e. (feature feature label) not (feature, label, feature)
-    public int readFeatures(String[] features){
+    public int readFeatures(ArrayList<String> features){
         int count = 0;
         String s;
         String[] temp;
@@ -95,7 +96,7 @@ public class FileManager implements FileInterface{
         temp = s.split("\\s*,\\s*");
 
         for(int i = 0; i < count; i++){
-            features[i] = temp[i];
+            features.add(temp[i]);
         }
 
         // Close the scanner
@@ -109,8 +110,8 @@ public class FileManager implements FileInterface{
     // Used to read the labels of the csv and return how many
     // Assuming the labels and their names are in the first and second line
     // and are in order i.e. (feature, feature, label) not (feature, label, feature)
-    public int readLabels(String[] labels){
-        int count = 0, index = 0, pos = 0;
+    public int readLabels(ArrayList<String> labels){
+        int count = 0, pos = 0;
         String s;
         String[] temp;
 
@@ -149,8 +150,7 @@ public class FileManager implements FileInterface{
 
         // Put last label names into string array
         for(int i = pos; i < temp.length; i++){
-            labels[index] = temp[i];
-            index++;
+            labels.add( temp[i] );
         }
 
         // Close the scanner
