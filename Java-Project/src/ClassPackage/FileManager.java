@@ -1,9 +1,11 @@
 package ClassPackage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 public class FileManager implements FileInterface{
     protected File activeFile;
@@ -17,12 +19,13 @@ public class FileManager implements FileInterface{
     protected static int line = 0;
 
     // Constructor
-    public FileManager(String fileName, String logFileName){
+    // Was String fileName, String logFileName
+    public FileManager(String fileName){
 
         try {
             // File Must be in the project directory not in src
             activeFile = new File(fileName);
-            logFile = new File(logFileName);
+            //logFile = new File(logFileName);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,19 +78,19 @@ public class FileManager implements FileInterface{
 
         // Counting how many Features
         s = fileScanner.nextLine();
-        s.toLowerCase();
+        s = s.toLowerCase();
 
         // Removing white space before/after comma
         // https://stackoverflow.com/questions/41953388/java-split-and-trim-in-one-shot
         temp = s.split("\\s*,\\s*");
 
         for(String i: temp){
-            if(i == "feature"){
+            if(i.equals("feature")){
                 count++;
             }
         }
 
-        // Placing names into the String array
+        // Split and Place names into the String array list
         s = "";
         temp = new String[0];
         s = fileScanner.nextLine();
@@ -123,28 +126,27 @@ public class FileManager implements FileInterface{
         }
 
         s = fileScanner.nextLine();
-        s.toLowerCase();
+        s = s.toLowerCase();
 
         temp = s.split("\\s*,\\s*");
 
         for(String i: temp){
-            if(i == "label"){
+            if(i.equals("label")){
                 count++;
             }
         }
         // Find first occurance for later
-        for(int i = temp.length; i < temp.length; i++){
-            if(temp[i] == "label"){
+        for(int i = 0; i < temp.length; i++){
+            if(temp[i].equals("label")){
                 pos = i;
                 break;
             }
         }
 
-        // Placing names into the String array
+        // Split and place names into the String array list
         s = "";
         temp = new String[0];
         s = fileScanner.nextLine();
-        s.toLowerCase();
 
         temp = s.split("\\s*,\\s*");
 
@@ -197,6 +199,27 @@ public class FileManager implements FileInterface{
         }
 
         return s;
+    }
+
+    public int countLines(){
+        int count = 0;
+
+        try {
+            fileScanner = new Scanner(activeFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        while(fileScanner.hasNextLine()){
+            if(fileScanner.nextLine() != null){
+                count++;
+                if( (count % 5) == 0 ){
+                    System.out.println(count);
+                }
+            }
+        }
+
+        return count;
     }
 
 
