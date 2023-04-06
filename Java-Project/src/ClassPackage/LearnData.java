@@ -19,10 +19,14 @@ public class LearnData {
     public static final String[] typesArray = {"male", "yes", "yes", "urban", "yes", "yes"};
 
     // They start at one because if they started at 0 the fianl probability will be 0
+    // {yes, no}
     public int[] labelCount = {0,0};
+    // Idea here is to place 2 states of each feature in one array
+    // {male, female,| yes, no,| yes, no,| urban, rural,| yes, no}
     public int[] countGivenYes = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     public int[] countGivenNo = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
+    // These hold the probabilities of each feature the same way as above
     private ArrayList<Double> probGivenYes = new ArrayList<Double>();
     private ArrayList<Double> probGivenNo = new ArrayList<Double>();
     private ArrayList<Double> probLabel = new ArrayList<Double>(2);
@@ -47,7 +51,13 @@ public class LearnData {
         // Count the occurances of each value given yes or no
         countOccurances();
 
+        // Calculate the probabilities for each feature against each Label
+        calcProbs();
+
     }
+
+    // Passing an instance to another class
+    //AnalyseInput test = new AnalyseInput(this, "Test");
 
 
 
@@ -77,6 +87,9 @@ public class LearnData {
     }
 
 
+
+    // Read all the data from the csv file and count occurances separated by the label
+    // e.g. Counts for features | Yes and features | No
     public void countOccurances(){
         int total = 0;
         int j;
@@ -92,12 +105,14 @@ public class LearnData {
 
             // Calculate the counts
             // First check the label then add count to correct array
-            // Checking the last item against the last label
+            // Checking the last item against the last label                                               Urban   Rural
+            // Each feature has two states e.g. Urban/Rural. The counts are put into an array in order e.g. {23  ,  45} for each feature
             if( splitStr[ (splitStr.length - 1) ].equals(typesArray[ (typesArray.length - 1) ]) ){
                 labelCount[0]++;
 
                 for(int i = 0; i < (splitStr.length - 1); i++){
 
+                    // Increment count for one of the 2 states of the featrue
                     if( splitStr[i].equals( typesArray[i] ) ){
                         countGivenYes[j]++;
                         j += 2;
@@ -114,6 +129,7 @@ public class LearnData {
 
                 for(int i = 0; i < (splitStr.length - 1); i++){
                 
+                    // Increment count for one of the 2 states of the featrue
                     if( splitStr[i].equals( typesArray[i] ) ){
                         countGivenNo[j]++;
                         j += 2;
@@ -128,7 +144,12 @@ public class LearnData {
         }
     }
 
+
+
+    // This will calculate all probabilities for all features given the labels
+    // e.g. P(Yes | Urban) , P(No | Urban)
     public void calcProbs(){
+        double testval;
         // Calculate Initial Label Probs
         for(int i = 0; i < labelCount.length; i++){
             probLabel.add( ( (double)labelCount[i] / dataCount ) );
@@ -138,19 +159,22 @@ public class LearnData {
         // Calculate probabilities given Yes
         while(true){
             for(int j = 0; j < countGivenYes.length; j++){
-                probGivenYes.add( (double)( countGivenYes[j] / labelCount[0] ) );
+                testval = (double)( countGivenYes[j] / (double)labelCount[0] );
+                probGivenYes.add( testval  );
             }
             break;
         }
 
+
         // Calculate probabilities given No
         while(true){
             for(int j = 0; j < countGivenNo.length; j++){
-                probGivenNo.add( (double)( countGivenNo[j] / labelCount[1] ) );
+                probGivenNo.add( (double)( countGivenNo[j] / (double)labelCount[1] ) );
             }
             break;
         }
     }
+
 
 
     // Getters
