@@ -10,8 +10,9 @@ public class App {
         
         //GUI mainGUI = new GUI();
 
-        LearnData ld = new LearnData();
+        // Will get filename from input window
+        LearnData ld = new LearnData("C:\\Users\\Aigar\\Java-Programming Repo\\Java-Programming\\Java-Project\\MLdata.csv");
 
-        ld.makeLabelandFeatureArrays();
+        ld.makeFeatureandLabelArrays();
     }
 }

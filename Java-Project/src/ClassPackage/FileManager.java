@@ -16,6 +16,7 @@ public class FileManager implements FileInterface{
     protected File logFile;
 
     protected static boolean open = false;
+    protected static boolean readTypes = false;
     protected static int line = 0;
 
     // Constructor
@@ -184,6 +185,12 @@ public class FileManager implements FileInterface{
             s = dataScanner.nextLine();
 
             line++;
+        }
+
+        if(readTypes == false){
+            readTypes = true;
+
+            return s;
         }
 
         while(dataScanner.hasNextLine()){
