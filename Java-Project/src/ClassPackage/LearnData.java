@@ -26,7 +26,6 @@ public class LearnData {
     
 
     // Constructor
-    // Example of method overloading
     public LearnData(String fileName){
         fm = new FileManager(fileName);
 
@@ -42,22 +41,6 @@ public class LearnData {
         // Count the occurances of each value given yes or no
         countOccurances();
 
-    }
-
-    //
-    // Check if this is even needed
-    //
-    public LearnData(String fileName, int featureNo, int labelNo){
-        fm = new FileManager(fileName);
-
-        featureArray = new ArrayList<String>(featureNo);
-        labelArray = new ArrayList<String>(labelNo);
-
-        // Read the first bit of data
-        // Features, Labels, Counts
-        makeFeatureandLabelArrays();
-        // Reads only one line and make the array with the data types
-        makeDataTypeArrayList(fm.readData());
     }
 
 
