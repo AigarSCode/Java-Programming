@@ -10,11 +10,11 @@ public class App {
 
     public static void main(String[] args){
         
-        //GUI mainGUI = new GUI();
+        GUI mainGUI = new GUI();
 
         // Will get filename from input window
-        ld = new LearnData("C:\\Users\\Aigar\\Java-Programming Repo\\Java-Programming\\Java-Project\\MLdata.csv");
+        //ld = new LearnData("C:\\Users\\Aigar\\Java-Programming Repo\\Java-Programming\\Java-Project\\MLdata.csv");
 
-        ld.makeFeatureandLabelArrays();
+        //ld.makeFeatureandLabelArrays();
     }
 }

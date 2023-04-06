@@ -227,6 +227,8 @@ public class FileManager implements FileInterface{
             }
         }
 
+        fileScanner.close();
+        
         return count;
     }
 
