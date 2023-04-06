@@ -12,14 +12,20 @@ public class LearnData {
     public ArrayList<String> labelArray;
     public ArrayList<String> dataTypeArray;
 
+    
+
     // Here is when I give up finding a way to dynamically get the variations in the types
     // This is to what the method countOccurances compares to, these values are first in the count arrays
     public static final String[] typesArray = {"male", "yes", "yes", "urban", "yes", "yes"};
 
     // They start at one because if they started at 0 the fianl probability will be 0
-    public int[] labelCount = {1,1};
+    public int[] labelCount = {0,0};
     public int[] countGivenYes = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     public int[] countGivenNo = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+    private ArrayList<Double> probGivenYes = new ArrayList<Double>();
+    private ArrayList<Double> probGivenNo = new ArrayList<Double>();
+    private ArrayList<Double> probLabel = new ArrayList<Double>(2);
 
     public int noFeatures;
     public int noLabels;
@@ -120,21 +126,43 @@ public class LearnData {
                 total++;
             }
         }
-
-
     }
-    
+
+    public void calcProbs(){
+        // Calculate Initial Label Probs
+        for(int i = 0; i < labelCount.length; i++){
+            probLabel.add( ( (double)labelCount[i] / dataCount ) );
+        }
+
+
+        // Calculate probabilities given Yes
+        while(true){
+            for(int j = 0; j < countGivenYes.length; j++){
+                probGivenYes.add( (double)( countGivenYes[j] / labelCount[0] ) );
+            }
+            break;
+        }
+
+        // Calculate probabilities given No
+        while(true){
+            for(int j = 0; j < countGivenNo.length; j++){
+                probGivenNo.add( (double)( countGivenNo[j] / labelCount[1] ) );
+            }
+            break;
+        }
+    }
+
+
+    // Getters
+    public ArrayList<Double> getProbGivenYes(){
+        return probGivenYes;
+    }
+
+    public ArrayList<Double> getProbGivenNo(){
+        return probGivenNo;
+    }
+
+    public ArrayList<Double> getProbLabel(){
+        return probLabel;
+    }
 }
-
-
-// THIS GETS ALL THE DATA LINES BACK
-    // String s;
-    // int i = 0;
-    // int count = fm.countLines();
-    // count = count - 3;
-    // while(i != count){
-    //     s = fm.readData();
-    //     System.out.println(s);
-    //     i++;
-    // }
-// /////////////////////////////////////
