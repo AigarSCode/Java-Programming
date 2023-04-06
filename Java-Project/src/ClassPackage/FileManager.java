@@ -187,15 +187,19 @@ public class FileManager implements FileInterface{
             line++;
         }
 
-        if(readTypes == false){
-            readTypes = true;
+        
 
-            return s;
-        }
-
+        // Reading while lines and skipping any empty lines
         while(dataScanner.hasNextLine()){
 
             s = dataScanner.nextLine();
+            // For reading the data Types
+            if(readTypes == false){
+                readTypes = true;
+            return s;
+            }
+
+
             if(s.contains(",,")){
                 continue;
             }
@@ -220,9 +224,6 @@ public class FileManager implements FileInterface{
         while(fileScanner.hasNextLine()){
             if(fileScanner.nextLine() != null){
                 count++;
-                if( (count % 5) == 0 ){
-                    System.out.println(count);
-                }
             }
         }
 
