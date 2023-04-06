@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 public class LearnData {
+    //AnalyseInput userInput;
     protected FileManager fm;
     protected String activeLine;
     protected int dataCount;
@@ -13,10 +14,9 @@ public class LearnData {
     public ArrayList<String> dataTypeArray;
 
     
-
     // Here is when I give up finding a way to dynamically get the variations in the types
     // This is to what the method countOccurances compares to, these values are first in the count arrays
-    public static final String[] typesArray = {"male", "yes", "yes", "urban", "yes", "yes"};
+    public final String[] typesArray = {"male", "yes", "yes", "urban", "yes", "yes"};
 
     // They start at one because if they started at 0 the fianl probability will be 0
     // {yes, no}
@@ -149,7 +149,6 @@ public class LearnData {
     // This will calculate all probabilities for all features given the labels
     // e.g. P(Yes | Urban) , P(No | Urban)
     public void calcProbs(){
-        double testval;
         // Calculate Initial Label Probs
         for(int i = 0; i < labelCount.length; i++){
             probLabel.add( ( (double)labelCount[i] / dataCount ) );
@@ -159,8 +158,7 @@ public class LearnData {
         // Calculate probabilities given Yes
         while(true){
             for(int j = 0; j < countGivenYes.length; j++){
-                testval = (double)( countGivenYes[j] / (double)labelCount[0] );
-                probGivenYes.add( testval  );
+                probGivenYes.add( (double)( countGivenYes[j] / (double)labelCount[0] ) );
             }
             break;
         }
