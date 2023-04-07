@@ -48,6 +48,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         midPanel = new JPanel();
         bottomPanel = new JPanel();
 
+        // Main Frame Config
         mainFrame.setVisible(true);
         mainFrame.setSize(600, 600);
         mainFrame.setLayout(new BorderLayout());
@@ -117,9 +118,11 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     // All actions to be performed after clicking a button.
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Choose a file
         if(e.getSource() == selectFileButton){
             chooseFile();
         }
+        // Learn the Data
         else if(e.getSource() == learnButton){
             if(chosenFile == null){
                 JOptionPane.showMessageDialog(null, "Please choose a file first");
@@ -131,19 +134,19 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
 
                 learnData.fm.writeLog("Completed Learn Data Operations");
             }
-            
         }
+        // Clear the model (With confirmation)
         else if(e.getSource() == clearModelButton){
             if(learnData == null){
                 displayToTextArea("There is nothing to clear");
                 JOptionPane.showMessageDialog(null, "Please click the learn button first");
-                
             }
             else{
                 // Get Confirmation
                 confirmWindow();
             }
         }
+        // Input User data and Display results
         else if(e.getSource() == inputProbs){
             // Error checking before calling Input and AnalyseInput
             if(userInput == null){
@@ -171,13 +174,15 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         }
     }
 
+
     // Action when the window is closed
+    // Close all writers and scanners
     @Override
     public void windowClosing(WindowEvent e) {
         if(learnData != null){
             learnData.fm.writeLog("Closed the window");
+            learnData.fm.closeAll();
         }
-        learnData.fm.closeAll();
         System.out.println("Window Closed");
         System.exit(0);
     }
@@ -246,16 +251,37 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     public String[] getUserString(){
         learnData.fm.writeLog("Displayed Input Window");
 
+        String inputString = "";
+        String[] resultString = null;
+
+        JPanel basePanel = new JPanel(new BorderLayout());
         JPanel inputPanel = new JPanel();
-        //inputPanel.setSize(400, 150);
+        JPanel topPanel = new JPanel();
+        JTextArea textArea = new JTextArea();
+
+        // Text Fields
         field1 = new JTextField();
         field2 = new JTextField();
         field3 = new JTextField();
         field4 = new JTextField();
         field5 = new JTextField();
-        String inputString = "";
-        String[] resultString = null;
+        
+        // This made the UI work dont touch
+        basePanel.add(inputPanel, BorderLayout.SOUTH);
+        basePanel.add(topPanel, BorderLayout.NORTH);
 
+        topPanel.add(textArea);
+        textArea.setSize(300,300);
+        textArea.setLineWrap(true);
+        inputPanel.add(topPanel);
+
+        //Display all the Features for the user to see
+        for(int i = 0; i < learnData.featureArray.size(); i++){
+            String s = ((i+1) + ". " + learnData.featureArray.get(i));
+            textArea.append(s + "\n");
+        }
+
+        // Text fields and their labels
         label1 = new JLabel("1:");
         inputPanel.add(label1);
         inputPanel.add(field1);
@@ -281,7 +307,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         inputPanel.add(field5);
         field5.setText("Yes/No");
 
-        int choice = JOptionPane.showConfirmDialog(null, inputPanel, "Enter Values", JOptionPane.OK_CANCEL_OPTION);
+        // Displaying the Menu itself
+        int choice = JOptionPane.showConfirmDialog(null, basePanel, "Enter Values", JOptionPane.OK_CANCEL_OPTION);
 
         if(choice == JOptionPane.OK_OPTION){
             inputString += field1.getText() + ",";
