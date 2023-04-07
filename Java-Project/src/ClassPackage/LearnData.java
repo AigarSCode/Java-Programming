@@ -144,7 +144,7 @@ public class LearnData {
         }
         // Close all files once complete because 
         // its the last method that accesses the files
-        fm.closeAll();
+        //fm.closeAll();
     }
 
 

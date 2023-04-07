@@ -119,16 +119,31 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         }
         else if(e.getSource() == learnButton){
             learnData = new LearnData(chosenFile.getAbsolutePath());
+            userInput = new AnalyseInput(learnData);
         }
         else if(e.getSource() == clearModelButton){
             // Get Confirmation
             confirmWindow();
         }
         else if(e.getSource() == inputProbs){
-            //
-            // NEED TO CALL ANALYSE INPUT WITH THIS RETURN
-            //
-            getUserString();
+            // Error checking before calling Input and AnalyseInput
+            if(userInput == null){
+                JOptionPane.showMessageDialog(null, "Please click the learn button first");
+            }
+            else{
+                String[] s;
+                if( (s = getUserString()).length == 0 ){
+                    JOptionPane.showMessageDialog(null,"Empty Input, cannot calculate!");
+                }
+                else{
+                    double result = userInput.calculateProb(s);
+                    String res = "Answer is: " + userInput.answer;
+                    res += ", With a probability of: " + String.format("%.2f", result);
+                     
+
+                    JOptionPane.showMessageDialog(null, res);
+                }
+            }
         }
         else if(e.getSource() == viewProbs){
             //
@@ -192,6 +207,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     // Getting user input through another window
     // https://stackoverflow.com/questions/6555040/multiple-input-in-joptionpane-showinputdialog
     public String[] getUserString(){
+
         JPanel inputPanel = new JPanel();
         inputPanel.setSize(400, 150);
         JTextField field1 = new JTextField();
@@ -200,7 +216,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         JTextField field4 = new JTextField();
         JTextField field5 = new JTextField();
         String inputString = "";
-        String[] resultString = {""};
+        String[] resultString = null;
 
         inputPanel.add(field1);
         field1.setText("Female/Male");
@@ -222,6 +238,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
             inputString += field4.getText() + ",";
             inputString += field5.getText();
             
+            inputString = inputString.toLowerCase();
             resultString = inputString.split("\\s*,\\s*");
         }
 

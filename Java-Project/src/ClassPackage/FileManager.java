@@ -38,8 +38,9 @@ public class FileManager implements FileInterface{
     // Close all readers and writers
     public void closeAll(){
         fileScanner.close();
-        fileWriter.close();
+        //fileWriter.close();
     }
+    
 
 
     // Delete a file called fileName

@@ -14,7 +14,11 @@ public class App {
 
         // Will get filename from input window
         //ld = new LearnData("C:\\Users\\Aigar\\Java-Programming Repo\\Java-Programming\\Java-Project\\MLdata.csv");
+        //AnalyseInput inputcheck = new AnalyseInput(ld);
 
-        //ld.makeFeatureandLabelArrays();
+        //String[] input = {"female","yes","no", "urban", "yes"};
+
+        //inputcheck.calculateProb(input);
+        
     }
 }

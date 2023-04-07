@@ -3,20 +3,18 @@ package ClassPackage;
 import java.util.ArrayList;
 
 public class AnalyseInput {
-    private String[] inputStr;
     private LearnData learnData;
     public boolean answer;
 
 
     // Make an instance of this object that has access to the LearnData Instance
-    public AnalyseInput(LearnData ld, String[] input){
+    public AnalyseInput(LearnData ld){
         this.learnData = ld;
-        this.inputStr = input;
     }
 
 
     // Take the user input and calculate the probability and return prob
-    public double calculateProb(){
+    public double calculateProb(String[] inputStr){
         double yesProb = 0;
         double noProb = 0;
         double tempProb = 1;
@@ -32,7 +30,7 @@ public class AnalyseInput {
 
             // Go through the probability array and pick out ones the user chose
             for(int i = 0; i < inputStr.length; i++){
-                if( inputStr[i].equals(learnData.typesArray[j]) ){
+                if( inputStr[i].equals(learnData.typesArray[i]) ){
                     tempProb =  ( tempProb * probYes.get(j) );
                     j += 2;
                 }
@@ -55,7 +53,7 @@ public class AnalyseInput {
 
             // Go through the probability array and pick out ones the user chose
             for(int i = 0; i < inputStr.length; i++){
-                if( inputStr[i].equals(learnData.typesArray[j]) ){
+                if( inputStr[i].equals(learnData.typesArray[i]) ){
                     tempProb =  ( tempProb * probNo.get(j) );
                     j += 2;
                 }
@@ -71,13 +69,19 @@ public class AnalyseInput {
             break;
         }
 
-        // Return the largest Probability as the choice
+        // Return the largest Probability as the choice (In Percent)
         if(yesProb > noProb){
             answer = true;
+            yesProb = ( (yesProb) / (yesProb + noProb) );
+            yesProb = yesProb * 100.0;
+
             return yesProb;
         }
         else{
             answer = false;
+            noProb = ( (noProb) / (noProb + yesProb) );
+            noProb = noProb * 100.0;
+            
             return noProb;  
         }
         
