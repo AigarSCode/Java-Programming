@@ -28,6 +28,9 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     JButton selectFileButton, learnButton, clearModelButton, viewProbs, inputProbs;
     JTextArea displayArea;
 
+    JLabel label1, label2, label3, label4, label5;
+    JTextField field1, field2, field3, field4, field5;
+
     JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView());
 
     // All other classes that will be used
@@ -118,8 +121,14 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
             chooseFile();
         }
         else if(e.getSource() == learnButton){
-            learnData = new LearnData(chosenFile.getAbsolutePath());
-            userInput = new AnalyseInput(learnData);
+            if(chosenFile == null){
+                JOptionPane.showMessageDialog(null, "Please choose a file first");
+            }
+            else{
+                learnData = new LearnData(chosenFile.getAbsolutePath());
+                userInput = new AnalyseInput(learnData);
+            }
+            
         }
         else if(e.getSource() == clearModelButton){
             // Get Confirmation
@@ -132,14 +141,12 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
             }
             else{
                 String[] s;
-                if( (s = getUserString()).length == 0 ){
+                if( (s = getUserString()) == null ){
                     JOptionPane.showMessageDialog(null,"Empty Input, cannot calculate!");
                 }
                 else{
                     double result = userInput.calculateProb(s);
-                    String res = "Answer is: " + userInput.answer;
-                    res += ", With a probability of: " + String.format("%.2f", result);
-                     
+                    String res = resultString(result);
 
                     JOptionPane.showMessageDialog(null, res);
                 }
@@ -209,23 +216,37 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     public String[] getUserString(){
 
         JPanel inputPanel = new JPanel();
-        inputPanel.setSize(400, 150);
-        JTextField field1 = new JTextField();
-        JTextField field2 = new JTextField();
-        JTextField field3 = new JTextField();
-        JTextField field4 = new JTextField();
-        JTextField field5 = new JTextField();
+        //inputPanel.setSize(400, 150);
+        field1 = new JTextField();
+        field2 = new JTextField();
+        field3 = new JTextField();
+        field4 = new JTextField();
+        field5 = new JTextField();
         String inputString = "";
         String[] resultString = null;
 
+        label1 = new JLabel("1:");
+        inputPanel.add(label1);
         inputPanel.add(field1);
         field1.setText("Female/Male");
+
+        label2 = new JLabel("2:");
+        inputPanel.add(label2);
         inputPanel.add(field2);
         field2.setText("Yes/No");
+
+        label3 = new JLabel("3:");
+        inputPanel.add(label3);
         inputPanel.add(field3);
         field3.setText("Yes/No");
+
+        label4 = new JLabel("4:");
+        inputPanel.add(label4);
         inputPanel.add(field4);
         field4.setText("Urban/Rural");
+
+        label5 = new JLabel("5:");
+        inputPanel.add(label5);
         inputPanel.add(field5);
         field5.setText("Yes/No");
 
@@ -243,6 +264,22 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         }
 
         return resultString;
+    }
+
+    // Just makes the result string more readable
+    public String resultString(double prob){
+        String s = "";
+        if(userInput.answer == true){
+            s += "This could be a future Entrepreneur! \n";
+        }
+        else{
+            s += "This may not be a future Entrepreneur! \n";
+        }
+
+        s += "Probability is: " + String.format("%.2f", prob) + "%";
+
+        return s;
+
     }
     
 

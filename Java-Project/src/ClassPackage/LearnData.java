@@ -177,6 +177,28 @@ public class LearnData {
     }
 
 
+    // Clear all the Learned Data
+    public void clearLearnedData(){
+        for(int i : labelCount){
+            labelCount[i] = 0;
+        }
+        for(int i : countGivenYes){
+            countGivenYes[i] = 1;
+            countGivenNo[i] = 1;
+        }
+
+        probGivenYes = new ArrayList<Double>();
+        probGivenNo = new ArrayList<Double>();
+        probLabel = new ArrayList<Double>(2);
+
+        noFeatures = noLabels = 0;
+
+        featureArray = new ArrayList<String>();
+        labelArray = new ArrayList<String>();
+        dataTypeArray = new ArrayList<String>();
+    }
+
+
 
     // Getters
     public ArrayList<Double> getProbGivenYes(){
