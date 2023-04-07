@@ -6,25 +6,34 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+ * File Manager class, This class is the reader class of the entire program.
+ * It is used to Read Features, Read Labels, Read Data, Count Lines. 
+ * It is what reads the CSV file that gets passed to it when an instance is made
+ * 
+ * Author: Aigars Semjonovs
+ * Date: April 2023
+ */
+
 
 public class FileManager extends logWriter implements FileInterface{
     protected File activeFile;
     protected Scanner fileScanner;
     protected Scanner dataScanner;
     
+    // Flags and counter
     protected static boolean open = false;
     protected static boolean readTypes = false;
     protected static int line = 0;
 
     // Constructor
-    // Was String fileName, String logFileName
+    // Open the file called fileName 
     public FileManager(String fileName){
         super();
 
         try {
             // File Must be in the project directory not in src
             activeFile = new File(fileName);
-            //logFile = new File(logFileName);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,7 +41,7 @@ public class FileManager extends logWriter implements FileInterface{
 
         writeLog("Instantiated FileManager");
 
-    }
+    }// End FileManager
 
 
     
@@ -42,7 +51,7 @@ public class FileManager extends logWriter implements FileInterface{
         PrintWriter pw = getfileWriter();
         writeLog("Closed Readers and Writers");
         pw.close();
-    }
+    }// End closeAll
     
     
     // Used to read the Features of the csv and return how many
@@ -91,7 +100,7 @@ public class FileManager extends logWriter implements FileInterface{
         writeLog("Read Features and Closed FileScanner");
 
         return count;
-    }
+    }// End readFeatures
 
 
     
@@ -146,7 +155,7 @@ public class FileManager extends logWriter implements FileInterface{
         writeLog("Read Labels and Closed FileScanner");
 
         return count;
-    }
+    }// End readLabels
 
 
 
@@ -167,6 +176,7 @@ public class FileManager extends logWriter implements FileInterface{
         }
 
         // Skip the first lines and move to the data 
+        // Tried to do it dynamically and failed
         while(line < 3){
             s = dataScanner.nextLine();
 
@@ -175,7 +185,7 @@ public class FileManager extends logWriter implements FileInterface{
 
         
 
-        // Reading while lines and skipping any empty lines
+        // Reading while there are lines and skipping any empty lines
         while(dataScanner.hasNextLine()){
 
             s = dataScanner.nextLine();
@@ -196,8 +206,9 @@ public class FileManager extends logWriter implements FileInterface{
         }
 
         return s;
-    }
+    }// End readData
 
+    // Count the number of lines in the entire csv file
     public int countLines(){
         int count = 0;
 
@@ -218,6 +229,19 @@ public class FileManager extends logWriter implements FileInterface{
         writeLog("Counted Lines of the CSV file");
         
         return count;
+    }// End countLines
+
+    // Setters
+    public void setOpen(boolean val){
+        open = val;
+    }
+
+    public void setreadTypes(boolean val){
+        readTypes = val;
+    }
+
+    public void setline(int val){
+        line = val;
     }
     
 }// End FileManager

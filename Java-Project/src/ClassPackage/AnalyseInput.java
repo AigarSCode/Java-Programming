@@ -2,11 +2,22 @@ package ClassPackage;
 
 import java.util.ArrayList;
 
+/*
+ * Analyse Input Class, used to Calculate the probability of
+ * a person becomming an Entrepreneur from the User Input through the GUI.
+ * Uses the LearnData class before it so all the probabilities are worked out
+ * 
+ * Author: Aigars Semjonovs
+ * Date: April 2023
+ */
+
+
 public class AnalyseInput {
     private LearnData learnData;
     public boolean answer;
 
 
+    // Constructor
     // Make an instance of this object that has access to the LearnData Instance
     public AnalyseInput(LearnData ld){
         this.learnData = ld;
@@ -89,6 +100,6 @@ public class AnalyseInput {
 
             return noProb;  
         }
-    }
+    }// End calculateProb
     
 }// End AnalyseInput

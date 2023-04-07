@@ -15,17 +15,26 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+/*
+ * GUI class used to Setup the GUI, the program is controled through the GUI
+ * Acts as a Parent class for every other Class (it makes instances of the necessary classes)
+ * 
+ * Author: Aigars Semjonovs
+ * Date: April 2023
+ */
+
 
 public class GUI extends JFrame implements ActionListener, WindowListener{
     File chosenFile;
     // Open the working directory instead of the default directory
     // https://stackoverflow.com/questions/21534515/jfilechooser-open-in-current-directory
     File workingDir = new File(System.getProperty("user.dir"));
+    boolean hasReset = true;
 
 
     JFrame mainFrame;
     JPanel topPanel, midPanel, bottomPanel;
-    JButton selectFileButton, learnButton, clearModelButton, viewProbs, inputProbs;
+    JButton selectFileButton, learnButton, clearModelButton, inputProbs;
     JTextArea displayArea;
 
     JLabel label1, label2, label3, label4, label5;
@@ -39,6 +48,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     AnalyseInput userInput;
 
 
+    // Constructor
     // Main Constructor for the GUI
     public GUI(){
 
@@ -73,7 +83,6 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         selectFileButton = new JButton();
         learnButton = new JButton();
         clearModelButton = new JButton();
-        viewProbs = new JButton();
         inputProbs = new JButton();
 
         displayArea = new JTextArea(25,50);
@@ -83,20 +92,17 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         selectFileButton.setText("Select File");
         learnButton.setText("Learn!");
         clearModelButton.setText("Clear model");
-        viewProbs.setText("View Probabilities");
         inputProbs.setText("Get Prediction");
 
         // Tool Tips
         selectFileButton.setToolTipText("Select a csv file");
         learnButton.setToolTipText("Learn using the file provided");
         clearModelButton.setToolTipText("Delete all learned data!");
-        viewProbs.setToolTipText("View all learned probabilities");
         inputProbs.setToolTipText("Input info to get Probability");
 
         // Panels and their buttons
         topPanel.add(selectFileButton);
         topPanel.add(learnButton);
-        topPanel.add(viewProbs);
         topPanel.add(inputProbs);
 
         midPanel.add(displayArea);
@@ -108,9 +114,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         selectFileButton.addActionListener(this);
         learnButton.addActionListener(this);
         clearModelButton.addActionListener(this);
-        viewProbs.addActionListener(this);
         inputProbs.addActionListener(this);
-    }
+    }// End GUI
 
 
 
@@ -131,7 +136,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
                 displayToTextArea("Started Learning Process");
                 learnData = new LearnData(chosenFile.getAbsolutePath());
                 userInput = new AnalyseInput(learnData);
-
+                // Remove Reset flag
+                hasReset = false;
                 learnData.fm.writeLog("Completed Learn Data Operations");
             }
         }
@@ -149,7 +155,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         // Input User data and Display results
         else if(e.getSource() == inputProbs){
             // Error checking before calling Input and AnalyseInput
-            if(userInput == null){
+            //if(userInput == null){
+            if(hasReset == true){
                 JOptionPane.showMessageDialog(null, "Please click the learn button first");
             }
             else{
@@ -167,12 +174,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
                 }
             }
         }
-        else if(e.getSource() == viewProbs){
-            //
-            // NEED TO DISPLAY PROBABILITIES IN THE TEXT AREA
-            //
-        }
-    }
+    }// End actionPerformed
 
 
     // Action when the window is closed
@@ -185,7 +187,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         }
         System.out.println("Window Closed");
         System.exit(0);
-    }
+    } 
 
 
     // Display to text area
@@ -225,7 +227,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
             displayToTextArea("You did not Choose a file!");
         }
 
-    }
+    }// End chooseFile
 
 
     // Displaying a confirmation window to the user
@@ -239,11 +241,14 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
 
         if(choice == 0){
             displayToTextArea("Deleting All Model Data!");
+            learnData.clearLearnedData();
+            // Set flag has reset
+            hasReset = true;
         }
         else{
             displayToTextArea("Not Deleting Data");
         }
-    }
+    }// End confirmWindow
 
 
     // Getting user input through another window
@@ -324,7 +329,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         learnData.fm.writeLog("Got User Input");
 
         return resultString;
-    }
+    }// End getUserString
 
     // Just makes the result string more readable
     public String resultString(double prob){
@@ -342,7 +347,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
 
         return s;
 
-    }
+    }// End resultString
     
 
     
@@ -366,4 +371,4 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     @Override
     public void windowDeactivated(WindowEvent e) {}
     
-}
+}// End GUI

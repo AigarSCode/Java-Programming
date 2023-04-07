@@ -1,7 +1,10 @@
 import ClassPackage.*;
 
 /*
- * Main Control Class of the entire program
+ * Main Control Class, only used to start the GUI
+ * 
+ * Author: Aigars Semjonovs
+ * Date: April 2023
  */
 
 

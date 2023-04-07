@@ -2,13 +2,21 @@ package ClassPackage;
 
 import java.util.ArrayList;
 
+/*
+ * LearnData class, this class uses FileManager Class to read:
+ * The Features, Labels and all the data points from a CSV file
+ * 
+ * Author: Aigars Semjonovs
+ * Date: April 2023
+ */
+
 
 public class LearnData {
-    //AnalyseInput userInput;
     protected FileManager fm;
     protected String activeLine;
     protected int dataCount;
 
+    // Public so they can be accessed
     public ArrayList<String> featureArray;
     public ArrayList<String> labelArray;
     public ArrayList<String> dataTypeArray;
@@ -19,7 +27,7 @@ public class LearnData {
     public final String[] typesArray = {"male", "yes", "yes", "urban", "yes", "yes"};
 
     // They start at one because if they started at 0 the fianl probability will be 0
-    // {yes, no}
+    //                      {yes, no}
     public int[] labelCount = {0,0};
     // Idea here is to place 2 states of each feature in one array
     // {male, female,| yes, no,| yes, no,| urban, rural,| yes, no}
@@ -31,8 +39,10 @@ public class LearnData {
     private ArrayList<Double> probGivenNo = new ArrayList<Double>();
     private ArrayList<Double> probLabel = new ArrayList<Double>(2);
 
+    // Used for dyanmic reading
     public int noFeatures;
     public int noLabels;
+    public boolean hasReset = false;
     
 
     // Constructor
@@ -56,13 +66,10 @@ public class LearnData {
 
         fm.writeLog("Instantiated LearnData");
 
-    }
-
-    // Passing an instance to another class
-    //AnalyseInput test = new AnalyseInput(this, "Test");
+    }// End LearnData
 
 
-
+    // Attempted Dynamic reading
     // Number of features and labels returned
     // All the names are put into the arraylists
     public void makeFeatureandLabelArrays(){
@@ -70,7 +77,7 @@ public class LearnData {
         noLabels = fm.readLabels(labelArray);
 
         dataCount = ( fm.countLines() ) - 3;
-    }
+    }// End makeFeatureandLabelArrays
     
 
     // Take the first line of data an use that as the types to expect
@@ -86,7 +93,7 @@ public class LearnData {
         for(int i = 0; i < total; i++){
             dataTypeArray.add( s[i] );
         }
-    }
+    }// End makeDataTypeArrayList
 
 
 
@@ -97,6 +104,7 @@ public class LearnData {
         int j;
         String s;
     
+        // Read while dataCount is not reached (total data lines)
         while(total != dataCount){
             j = 0;
 
@@ -131,7 +139,7 @@ public class LearnData {
 
                 for(int i = 0; i < (splitStr.length - 1); i++){
                 
-                    // Increment count for one of the 2 states of the featrue
+                    // Increment count to get one of the 2 states of the featrue
                     if( splitStr[i].equals( typesArray[i] ) ){
                         countGivenNo[j]++;
                         j += 2;
@@ -146,7 +154,7 @@ public class LearnData {
         }
         
         fm.writeLog("Completed all CSV reads");
-    }
+    }// End countOccurances
 
 
 
@@ -177,15 +185,15 @@ public class LearnData {
         }
 
         fm.writeLog("Calculated All Probabilities");
-    }
+    }// End calcProbs
 
 
     // Clear all the Learned Data
     public void clearLearnedData(){
-        for(int i : labelCount){
+        for(int i = 0; i < labelCount.length; i++){
             labelCount[i] = 0;
         }
-        for(int i : countGivenYes){
+        for(int i = 0; i < countGivenYes.length; i++){
             countGivenYes[i] = 1;
             countGivenNo[i] = 1;
         }
@@ -200,8 +208,11 @@ public class LearnData {
         labelArray = new ArrayList<String>();
         dataTypeArray = new ArrayList<String>();
 
+        fm.setOpen(false);
+        fm.setreadTypes(false);
+        fm.setline(0);
         fm.writeLog("Cleared All Learned Data");
-    }
+    }// End clearLearnedData
 
 
 
@@ -220,4 +231,4 @@ public class LearnData {
         fm.writeLog("Returned probLabel");
         return probLabel;
     }
-}
+}// End LearnData

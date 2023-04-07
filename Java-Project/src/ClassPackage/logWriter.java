@@ -5,6 +5,15 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/*
+ * Simple Log Writing File, Throughout the whole program there are log points
+ * which are logged into the log file along with the time it happened
+ * 
+ * Author: Aigars Semjonovs
+ * Date: April 2023
+ */
+
+
 public class logWriter {
     private PrintWriter fileWriter;
     private File logFile;
@@ -12,6 +21,7 @@ public class logWriter {
     LocalDateTime timeNow;
     
 
+    // Constructor
     // Make the Log File and open the Writer
     public logWriter(){
 
@@ -25,7 +35,7 @@ public class logWriter {
         }
 
         writeLog("Instantiated LogWriter");
-    }
+    }// End logWriter
 
 
     // Write the log to the file including the current time and date
@@ -35,10 +45,10 @@ public class logWriter {
         line += s + " |";
 
         fileWriter.println(line);
-    }
+    }// End writeLog
     
 
-    // Delete a file called fileName
+    // Delete the log file
     public void deleteLogFile(){
         
         try{
@@ -52,7 +62,7 @@ public class logWriter {
         }catch(Exception e) {
             e.printStackTrace();
         }
-    }
+    }// End deleteLogFile
 
 
     // Getter
@@ -60,5 +70,4 @@ public class logWriter {
         return fileWriter;
     }
 
-    
-}
+}// End logWriter
