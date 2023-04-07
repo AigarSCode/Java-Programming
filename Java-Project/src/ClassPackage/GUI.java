@@ -44,7 +44,6 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
 
     // All other classes that will be used
     LearnData learnData;
-    FileManager fileManager;
     AnalyseInput userInput;
 
 

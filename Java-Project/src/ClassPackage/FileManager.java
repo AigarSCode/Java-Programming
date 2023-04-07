@@ -66,7 +66,7 @@ public class FileManager extends logWriter implements FileInterface{
         try {
             fileScanner = new Scanner(activeFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            
         }
 
         // Counting how many Features
@@ -116,7 +116,7 @@ public class FileManager extends logWriter implements FileInterface{
         try {
             fileScanner = new Scanner(activeFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            
         }
 
         s = fileScanner.nextLine();
@@ -171,7 +171,7 @@ public class FileManager extends logWriter implements FileInterface{
                 dataScanner = new Scanner(activeFile);
                 open = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                
             }
         }
 
@@ -215,7 +215,7 @@ public class FileManager extends logWriter implements FileInterface{
         try {
             fileScanner = new Scanner(activeFile);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
         }
 
         while(fileScanner.hasNextLine()){
