@@ -10,6 +10,7 @@ public class AnalyseInput {
     // Make an instance of this object that has access to the LearnData Instance
     public AnalyseInput(LearnData ld){
         this.learnData = ld;
+        learnData.fm.writeLog("Instantiated AnalyseInput");
     }
 
 
@@ -75,16 +76,19 @@ public class AnalyseInput {
             yesProb = ( (yesProb) / (yesProb + noProb) );
             yesProb = yesProb * 100.0;
 
+            learnData.fm.writeLog("Calculated Probabilities from User input");
+
             return yesProb;
         }
         else{
             answer = false;
             noProb = ( (noProb) / (noProb + yesProb) );
             noProb = noProb * 100.0;
-            
+
+            learnData.fm.writeLog("Calculated Probabilities from User input");
+
             return noProb;  
         }
-        
     }
     
-}
+}// End AnalyseInput

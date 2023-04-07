@@ -125,14 +125,24 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
                 JOptionPane.showMessageDialog(null, "Please choose a file first");
             }
             else{
+                displayToTextArea("Started Learning Process");
                 learnData = new LearnData(chosenFile.getAbsolutePath());
                 userInput = new AnalyseInput(learnData);
+
+                learnData.fm.writeLog("Completed Learn Data Operations");
             }
             
         }
         else if(e.getSource() == clearModelButton){
-            // Get Confirmation
-            confirmWindow();
+            if(learnData == null){
+                displayToTextArea("There is nothing to clear");
+                JOptionPane.showMessageDialog(null, "Please click the learn button first");
+                
+            }
+            else{
+                // Get Confirmation
+                confirmWindow();
+            }
         }
         else if(e.getSource() == inputProbs){
             // Error checking before calling Input and AnalyseInput
@@ -140,11 +150,13 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
                 JOptionPane.showMessageDialog(null, "Please click the learn button first");
             }
             else{
+                learnData.fm.writeLog("Clicked InputProbs");
                 String[] s;
                 if( (s = getUserString()) == null ){
                     JOptionPane.showMessageDialog(null,"Empty Input, cannot calculate!");
                 }
                 else{
+                    displayToTextArea("Calculating Result!");
                     double result = userInput.calculateProb(s);
                     String res = resultString(result);
 
@@ -162,13 +174,22 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     // Action when the window is closed
     @Override
     public void windowClosing(WindowEvent e) {
+        if(learnData != null){
+            learnData.fm.writeLog("Closed the window");
+        }
+        learnData.fm.closeAll();
         System.out.println("Window Closed");
+        System.exit(0);
     }
 
 
     // Display to text area
     public void displayToTextArea(String s){
-        displayArea.append(s + ", ");
+        displayArea.append("> " + s + "\n");
+
+        if(learnData != null){
+            learnData.fm.writeLog("Displayed to Text Area");
+        }
     }
 
 
@@ -193,20 +214,29 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
 
         if(statusVal == JFileChooser.APPROVE_OPTION){
             chosenFile = fileChooser.getSelectedFile();
+            displayToTextArea("The file you chose is: " + chosenFile.getAbsolutePath());
         }
+        else{
+            displayToTextArea("You did not Choose a file!");
+        }
+
     }
 
 
     // Displaying a confirmation window to the user
     // https://mkyong.com/swing/java-swing-how-to-make-a-confirmation-dialog/
     public void confirmWindow(){
+        if(learnData != null){
+            learnData.fm.writeLog("Displayed Confirmation Window");
+        }
+        
         int choice = JOptionPane.showConfirmDialog(null,"Delete Model Data?");
 
         if(choice == 0){
-            displayToTextArea("Deleting Model Data!");
+            displayToTextArea("Deleting All Model Data!");
         }
         else{
-            displayToTextArea("Not Deleting");
+            displayToTextArea("Not Deleting Data");
         }
     }
 
@@ -214,6 +244,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
     // Getting user input through another window
     // https://stackoverflow.com/questions/6555040/multiple-input-in-joptionpane-showinputdialog
     public String[] getUserString(){
+        learnData.fm.writeLog("Displayed Input Window");
 
         JPanel inputPanel = new JPanel();
         //inputPanel.setSize(400, 150);
@@ -263,6 +294,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
             resultString = inputString.split("\\s*,\\s*");
         }
 
+        learnData.fm.writeLog("Got User Input");
+
         return resultString;
     }
 
@@ -277,6 +310,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener{
         }
 
         s += "Probability is: " + String.format("%.2f", prob) + "%";
+
+        learnData.fm.writeLog("Displayed Result and Probability");
 
         return s;
 

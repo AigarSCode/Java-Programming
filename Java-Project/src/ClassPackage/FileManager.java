@@ -7,14 +7,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class FileManager implements FileInterface{
+public class FileManager extends logWriter implements FileInterface{
     protected File activeFile;
     protected Scanner fileScanner;
     protected Scanner dataScanner;
-    protected PrintWriter fileWriter;
-    protected File outFile;
-    protected File logFile;
-
+    
     protected static boolean open = false;
     protected static boolean readTypes = false;
     protected static int line = 0;
@@ -22,6 +19,7 @@ public class FileManager implements FileInterface{
     // Constructor
     // Was String fileName, String logFileName
     public FileManager(String fileName){
+        super();
 
         try {
             // File Must be in the project directory not in src
@@ -32,35 +30,19 @@ public class FileManager implements FileInterface{
             e.printStackTrace();
         }
 
+        writeLog("Instantiated FileManager");
+
     }
+
 
     
     // Close all readers and writers
     public void closeAll(){
         fileScanner.close();
-        //fileWriter.close();
+        PrintWriter pw = getfileWriter();
+        writeLog("Closed Readers and Writers");
+        pw.close();
     }
-    
-
-
-    // Delete a file called fileName
-    public void deleteFile(String fileName){
-        
-        try{
-            File file = new File(fileName);
-
-            if (file.delete()){
-                System.out.println("Successful Delete!");
-            }
-            else{
-                System.out.println("Failed to Delete!");
-            }
-
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     
     
     // Used to read the Features of the csv and return how many
@@ -106,6 +88,7 @@ public class FileManager implements FileInterface{
 
         // Close the scanner
         fileScanner.close();
+        writeLog("Read Features and Closed FileScanner");
 
         return count;
     }
@@ -160,6 +143,8 @@ public class FileManager implements FileInterface{
         // Close the scanner
         fileScanner.close();
 
+        writeLog("Read Labels and Closed FileScanner");
+
         return count;
     }
 
@@ -197,7 +182,7 @@ public class FileManager implements FileInterface{
             // For reading the data Types
             if(readTypes == false){
                 readTypes = true;
-            return s;
+                return s;
             }
 
 
@@ -229,24 +214,10 @@ public class FileManager implements FileInterface{
         }
 
         fileScanner.close();
+
+        writeLog("Counted Lines of the CSV file");
         
         return count;
     }
-
-
-
-    // Writes an input string (full csv line) out to a file
-    public void writeNextCSV(String fileName, String next){
-
-    }
-
-
-
-    // Writes an input line into a log file
-    public void writeNextLog(String nextLine){
-
-    }
-
-    
     
 }// End FileManager

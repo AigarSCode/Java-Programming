@@ -54,6 +54,8 @@ public class LearnData {
         // Calculate the probabilities for each feature against each Label
         calcProbs();
 
+        fm.writeLog("Instantiated LearnData");
+
     }
 
     // Passing an instance to another class
@@ -142,9 +144,8 @@ public class LearnData {
                 total++;
             }
         }
-        // Close all files once complete because 
-        // its the last method that accesses the files
-        //fm.closeAll();
+        
+        fm.writeLog("Completed all CSV reads");
     }
 
 
@@ -174,6 +175,8 @@ public class LearnData {
             }
             break;
         }
+
+        fm.writeLog("Calculated All Probabilities");
     }
 
 
@@ -196,20 +199,25 @@ public class LearnData {
         featureArray = new ArrayList<String>();
         labelArray = new ArrayList<String>();
         dataTypeArray = new ArrayList<String>();
+
+        fm.writeLog("Cleared All Learned Data");
     }
 
 
 
     // Getters
     public ArrayList<Double> getProbGivenYes(){
+        fm.writeLog("Returned probGivenYes");
         return probGivenYes;
     }
 
     public ArrayList<Double> getProbGivenNo(){
+        fm.writeLog("Returned probGivenNo");
         return probGivenNo;
     }
 
     public ArrayList<Double> getProbLabel(){
+        fm.writeLog("Returned probLabel");
         return probLabel;
     }
 }
